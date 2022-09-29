@@ -1,4 +1,4 @@
-- [Datadog install on EKS for CFK](#datadog-install-on-eks-for-cfk)
+- [Install on EKS for CFK](#datadog-install-on-eks-for-cfk)
   - [Sign up for 14 days free access to DD](#sign-up-for-14-days-free-access-to-dd)
   - [Create API key](#create-api-key)
   - [Install via helm](#install-via-helm)

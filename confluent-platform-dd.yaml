@@ -1,0 +1,141 @@
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Zookeeper
+metadata:
+  name: zookeeper
+  namespace: confluent
+spec:
+  podTemplate:
+    annotations:
+      ad.datadoghq.com/zookeeper.check_names: '["confluent_platform"]'
+      ad.datadoghq.com/zookeeper.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
+      ad.datadoghq.com/zookeeper.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
+      ad.datadoghq.com/zookeeper.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
+  replicas: 3
+  image:
+    application: confluentinc/cp-zookeeper:7.2.1
+    init: confluentinc/confluent-init-container:2.4.1
+  dataVolumeCapacity: 10Gi
+  logVolumeCapacity: 10Gi
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka
+  namespace: confluent
+spec:
+  podTemplate:
+    annotations:
+      ad.datadoghq.com/kafka.check_names: '["confluent_platform"]'
+      ad.datadoghq.com/kafka.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
+      ad.datadoghq.com/kafka.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
+      ad.datadoghq.com/kafka.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
+  replicas: 3
+  image:
+    application: confluentinc/cp-server:7.2.1
+    init: confluentinc/confluent-init-container:2.4.1
+  dataVolumeCapacity: 10Gi
+  metricReporter:
+    enabled: true
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connect
+metadata:
+  name: connect
+  namespace: confluent
+spec:
+  podTemplate:
+    annotations:
+      ad.datadoghq.com/connect.check_names: '["confluent_platform"]'
+      ad.datadoghq.com/connect.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
+      ad.datadoghq.com/connect.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
+      ad.datadoghq.com/connect.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
+  replicas: 1
+  image:
+    application: confluentinc/cp-server-connect:7.2.1
+    init: confluentinc/confluent-init-container:2.4.1
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka:9071
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: KsqlDB
+metadata:
+  name: ksqldb
+  namespace: confluent
+spec:
+  podTemplate:
+    annotations:
+      ad.datadoghq.com/ksqldb.check_names: '["confluent_platform"]'
+      ad.datadoghq.com/ksqldb.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
+      ad.datadoghq.com/ksqldb.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
+      ad.datadoghq.com/ksqldb.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
+  replicas: 1
+  image:
+    application: confluentinc/cp-ksqldb-server:7.2.1
+    init: confluentinc/confluent-init-container:2.4.1
+  dataVolumeCapacity: 10Gi
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ControlCenter
+metadata:
+  name: controlcenter
+  namespace: confluent
+spec:
+  podTemplate:
+    annotations:
+      ad.datadoghq.com/controlcenter.check_names: '["confluent_platform"]'
+      ad.datadoghq.com/controlcenter.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
+      ad.datadoghq.com/controlcenter.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
+      ad.datadoghq.com/controlcenter.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
+  replicas: 1
+  image:
+    application: confluentinc/cp-enterprise-control-center:7.2.1
+    init: confluentinc/confluent-init-container:2.4.1
+  dataVolumeCapacity: 10Gi
+  dependencies:
+    schemaRegistry:
+      url: http://schemaregistry.confluent.svc.cluster.local:8081
+    ksqldb:
+    - name: ksqldb
+      url: http://ksqldb.confluent.svc.cluster.local:8088
+    connect:
+    - name: connect
+      url: http://connect.confluent.svc.cluster.local:8083
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: SchemaRegistry
+metadata:
+  name: schemaregistry
+  namespace: confluent
+spec:
+  podTemplate:
+    annotations:
+      ad.datadoghq.com/schemaregistry.check_names: '["confluent_platform"]'
+      ad.datadoghq.com/schemaregistry.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
+      ad.datadoghq.com/schemaregistry.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
+      ad.datadoghq.com/schemaregistry.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
+  replicas: 3
+  image:
+    application: confluentinc/cp-schema-registry:7.2.1
+    init: confluentinc/confluent-init-container:2.4.1
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestProxy
+metadata:
+  name: kafkarestproxy
+  namespace: confluent
+spec:
+  podTemplate:
+    annotations:
+      ad.datadoghq.com/kafkarestproxy.check_names: '["confluent_platform"]'
+      ad.datadoghq.com/kafkarestproxy.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
+      ad.datadoghq.com/kafkarestproxy.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
+      ad.datadoghq.com/kafkarestproxy.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
+  replicas: 1
+  image:
+    application: confluentinc/cp-kafka-rest:7.2.1
+    init: confluentinc/confluent-init-container:2.4.1
+  dependencies:
+    schemaRegistry:
+      url: http://schemaregistry.confluent.svc.cluster.local:8081

@@ -29,12 +29,9 @@ For  information on how to install Datadog agent on Kubernetes Follow this(It wa
 
 ## Create DataDog API key 
 
-
-
-
 Navigate to the Organisational settings in your DataDog UI and scroll to the API keys section. Create a new key, Save it for future usage in CP integration on kubernetes nodes
 
-[Create API key](https://app.datadoghq.eu/organization-settings/api-keys) for the next steps. 
+Refere this documentation [Create API key](https://app.datadoghq.eu/organization-settings/api-keys) for the next steps. 
 
 
 ## Install Datadog using  helm 
@@ -45,13 +42,11 @@ To install the chart for Datadog, identify the right release name:
 2. Using the Datadog values.yaml configuration file as a reference, create your values.yaml. Datadog recommends that your values.yaml only contain values that need to be overridden, as it allows a smooth experience when upgrading chart versions.
 If this is a fresh install, add the Helm Datadog repo:
 ```
-helm   repo add datadog https://helm.datadoghq.com
-helm   repo update
+helm repo add datadog https://helm.datadoghq.com
+helm repo update
 
 ```
 3. Retrieve your Datadog API key from your Agent installation instructions and run:
-
-[Steps](https://docs.datadoghq.com/containers/kubernetes/installation/?tab=helm)
 
 ```
 helm repo add datadog https://helm.datadoghq.com
@@ -79,9 +74,8 @@ If you are using one of the other sites (EU, US3, or US1-FED) this will result i
 ## Annotations for each Kafka Component  in CP deployment yaml file
 
 This tutorial assumes you are aware of the process of deploying a CP cluster using CFK. If not, please get started using the quickstart CFK repository under Confluent for Kubernetes examples repo. 
-Modify the [CFK quickstart-deploy](confluent-platform-DD.yaml)  
-Add the followings to each CRD (used for events) so [Autodiscovery](https://docs.datadoghq.com/agent/guide/autodiscovery-with-jmx/?tab=containerizedagent#autodiscovery-annotations) will work, this example shows `kafka` after the `/`, this is the `name` of the CR.  
-The <cp-component> in the annotations is kafka, zookeper,connect
+Modify the [CFK quickstart-deploy](confluent-platform-dd.yaml) to reflect the datadog annotations.Add the following annotations to each component specific CRD (used for events), so [Autodiscovery](https://docs.datadoghq.com/agent/guide/autodiscovery-with-jmx/?tab=containerizedagent#autodiscovery-annotations) will work, this example shows `kafka` after the `/`, this is the `name` of the CR.  
+The <cp-component> in the annotations is kafka, zookeper,connect, schemaregistry
 ```
 spec:
   podTemplate:
@@ -96,7 +90,6 @@ Refer to the completed CP yaml here [CP platform config](confluent-platform-dd.y
 
 ## Integrate Confluent Platfrom with DataDog
 
-![CP integration on DD UI](Screencaptures/integration.png)
 
 
 ## Validation
@@ -108,14 +101,6 @@ kubectl get pods -l app.kubernetes.io/component=agent
 ```
 Desired Output:
 
-NAME                     READY   STATUS    RESTARTS   AGE
-ganne-dd-datadog-25ttj   3/3     Running   0          18h
-ganne-dd-datadog-gckzk   3/3     Running   0          18h
-ganne-dd-datadog-gtvlw   3/3     Running   0          18h
-ganne-dd-datadog-m5zff   3/3     Running   0          18h
-ganne-dd-datadog-n4bl7   3/3     Running   0          18h
-     
-           
 ```
 
 # Execute into one of the DD agent pods and check the Datadog agent status
@@ -128,31 +113,23 @@ agent status
 Look for the jmxfetch section of the agent status output. It should now show the already established Confluent platform integration 
 
 ```
-   ========
-   JMXFetch
-   ========
-
-  Information
-  ==================
-    runtime_version : 11.0.16
-    version : 0.46.0
-   Initialized checks
-  ==================
-    confluent_platform
+      ========
+      JMXFetch
+      ========
+     Information
+     ==================
+      runtime_version : 11.0.16
+      version : 0.46.0
+      Initialized checks
+      ==================
+      confluent_platform
       instance_name : confluent_platform-10.92.6.5-7203
       message : <no value>
       metric_count : 115
       service_check_count : 0
       status : OK
-   Failed checks
-   =============
-    no checks
+   
 ```
-
-```
-
-### Check the UI 
-
 
 ### Check the dashboard 
 

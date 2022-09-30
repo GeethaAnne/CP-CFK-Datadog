@@ -95,20 +95,15 @@ Refer to the completed CP yaml here [CP platform config](confluent-platform-dd.y
 ## Validation
 
 When datadog agents are installed on each of the K8s node, they should be displayed when you run the below command
-```
-kubectl get pods -l app.kubernetes.io/component=agent 
-
+```kubectl get pods -l app.kubernetes.io/component=agent 
 ```
 Desired Output:
 
-```
-
-# Execute into one of the DD agent pods and check the Datadog agent status
+## Execute into one of the DD agent pods and check the Datadog agent status
 
 ```
 kubectl exec -it <datadog agent pods > -- bash 
 agent status 
-
 ```
 Look for the jmxfetch section of the agent status output. It should now show the already established Confluent platform integration 
 
@@ -116,8 +111,8 @@ Look for the jmxfetch section of the agent status output. It should now show the
       ========
       JMXFetch
       ========
-     Information
-     ==================
+      Information
+      ==================
       runtime_version : 11.0.16
       version : 0.46.0
       Initialized checks
@@ -134,17 +129,15 @@ Look for the jmxfetch section of the agent status output. It should now show the
 ### Check the dashboard 
 
 
-# Clean-up 
+# Clean-up the data agent install
 
 ```
 helm delete ganne-dd
 ```
 
+## Troubleshooting 
 
-
-# Troubleshooting 
-
-## Inside the pod kafka-0  
+### Inside the pod kafka-0  
 ```
 kubectl --namespace=confluent exec -it kafka-0 -- bash
 hostname

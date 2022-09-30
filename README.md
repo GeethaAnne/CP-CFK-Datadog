@@ -1,5 +1,4 @@
-- [Install on EKS for CFK](#datadog-install-on-eks-for-cfk)
-  - [Sign up for 14 days free access to DD](#sign-up-for-14-days-free-access-to-dd)
+- [Install DataDog on Kubernetes Clusters](#datadog-install-on-eks-for-cfk)
   - [Create API key](#create-api-key)
   - [Install via helm](#install-via-helm)
   - [Site (none US folks)](#site-none-us-folks)
@@ -19,20 +18,21 @@
   - [Check JVM for agents and ports of Jolokia and prometheus](#check-jvm-for-agents-and-ports-of-jolokia-and-prometheus)
     - [Notice the followings](#notice-the-followings)
       - [Example](#example-1)
-# Datadog install on EKS for CFK 
+      
+This  guide provides an introduction to Data Dog and CP integration when deployed on Kubernetes.  It walks through an example Agent installation and how you can use it to send system level metrics to the Datadog platform. 
 
-A guide install Confluent Platform Datadog integration 
+# Install DataDog on K8s 
 
-## Sign up for 14 days free access to DD 
-You can sign up for a 14 days trail with DD, no credit card needed. 
-Just google `datadog free trial`
+First we need to install a DD agent on every node of the K8s cluster. The Datadog Agent is software that runs on your hosts. It collects events and metrics from hosts and sends them to Datadog, where you can analyze your monitoring and performance data. It can run on your local hosts (Windows, MacOS), containerized environments (Docker, Kubernetes), and in on-premises data centers. You can install and configure it using configuration management tools (Chef, Puppet, Ansible).
+
+For  information on how to install Datadog agent on Kubernetes Follow this(It walks through an example Agent installation) guide
 
 ## Create API key 
 
 [Create API key](https://app.datadoghq.eu/organization-settings/api-keys) for the next steps. 
 
 
-## Install via helm 
+## Install Datadog using  helm 
 
 [Steps](https://docs.datadoghq.com/containers/kubernetes/installation/?tab=helm)
 
@@ -59,9 +59,11 @@ Set your Datadog site to datadoghq.com using the DD_SITE environment variable in
 Note: If the `DD_SITE` environment variable is not explicitly set, it defaults to the US site `datadoghq.com`.  
 If you are using one of the other sites (EU, US3, or US1-FED) this will result in an invalid API key message. Use the documentation site selector to see documentation appropriate for the site you’re using.
 
-# CR annotations for CFK  
+# Annotations for each Kafka Component   
 
-Included file for [CFK quickstart-deploy](confluent-platform-with-DD.yaml)  
+
+This tutorial assumes you are aware of the process of deploying a CP cluster using CFK. If not, please get started using the quickstart CFK repository under Confluent for Kubernetes examples repo. 
+Modify the [CFK quickstart-deploy](confluent-platform-DD.yaml)  
 
 Add the followings to each CRD (used for events) so [Autodiscovery](https://docs.datadoghq.com/agent/guide/autodiscovery-with-jmx/?tab=containerizedagent#autodiscovery-annotations) will work, this example shows `kafka` after the `/`, this is the `name` of the CR.  
 

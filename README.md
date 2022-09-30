@@ -70,102 +70,63 @@ helm install mbldd -f values.yaml  \
 
 
 
-## Site (none US folks)  
+## Manually enter the Datadog site name 
 
 Set your Datadog site to datadoghq.com using the DD_SITE environment variable in the datadog-agent.yaml manifest.
 Note: If the `DD_SITE` environment variable is not explicitly set, it defaults to the US site `datadoghq.com`.  
 If you are using one of the other sites (EU, US3, or US1-FED) this will result in an invalid API key message. Use the documentation site selector to see documentation appropriate for the site you’re using.
 
-# Annotations for each Kafka Component  in CP deployment yaml file
-
+## Annotations for each Kafka Component  in CP deployment yaml file
 
 This tutorial assumes you are aware of the process of deploying a CP cluster using CFK. If not, please get started using the quickstart CFK repository under Confluent for Kubernetes examples repo. 
 Modify the [CFK quickstart-deploy](confluent-platform-DD.yaml)  
-
 Add the followings to each CRD (used for events) so [Autodiscovery](https://docs.datadoghq.com/agent/guide/autodiscovery-with-jmx/?tab=containerizedagent#autodiscovery-annotations) will work, this example shows `kafka` after the `/`, this is the `name` of the CR.  
-
+The <cp-component> in the annotations is kafka, zookeper,connect
 ```
 spec:
   podTemplate:
     annotations:
-      ad.datadoghq.com/kafka.check_names: '["confluent_platform"]'
-      ad.datadoghq.com/kafka.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
-      ad.datadoghq.com/kafka.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
-      ad.datadoghq.com/kafka.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
+      ad.datadoghq.com/<cp-component>.check_names: '["confluent_platform"]'
+      ad.datadoghq.com/<cp-component>.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
+      ad.datadoghq.com/<cp-component>.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
+      ad.datadoghq.com/<cp-component>.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
 ```
 
-## Example: 
+Refer to the completed CP yaml here [CP platform config](confluent-platform-dd.yaml) 
 
-```
-spec:
-  podTemplate:
-    annotations:
-      ad.datadoghq.com/zookeeper.check_names: '["confluent_platform"]'
-      ad.datadoghq.com/zookeeper.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
-      ad.datadoghq.com/zookeeper.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
-      ad.datadoghq.com/zookeeper.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
---
-spec:
-  podTemplate:
-    annotations:
-      ad.datadoghq.com/kafka.check_names: '["confluent_platform"]'
-      ad.datadoghq.com/kafka.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
-      ad.datadoghq.com/kafka.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
-      ad.datadoghq.com/kafka.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
---
-spec:
-  podTemplate:
-    annotations:
-      ad.datadoghq.com/connect.check_names: '["confluent_platform"]'
-      ad.datadoghq.com/connect.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
-      ad.datadoghq.com/connect.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
-      ad.datadoghq.com/connect.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
---
-spec:
-  podTemplate:
-    annotations:
-      ad.datadoghq.com/ksqldb.check_names: '["confluent_platform"]'
-      ad.datadoghq.com/ksqldb.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
-      ad.datadoghq.com/ksqldb.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
-      ad.datadoghq.com/ksqldb.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
---
-spec:
-  podTemplate:
-    annotations:
-      ad.datadoghq.com/controlcenter.check_names: '["confluent_platform"]'
-      ad.datadoghq.com/controlcenter.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
-      ad.datadoghq.com/controlcenter.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
-      ad.datadoghq.com/controlcenter.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
---
-spec:
-  podTemplate:
-    annotations:
-      ad.datadoghq.com/schemaregistry.check_names: '["confluent_platform"]'
-      ad.datadoghq.com/schemaregistry.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
-      ad.datadoghq.com/schemaregistry.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
-      ad.datadoghq.com/schemaregistry.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
---
-spec:
-  podTemplate:
-    annotations:
-      ad.datadoghq.com/kafkarestproxy.check_names: '["confluent_platform"]'
-      ad.datadoghq.com/kafkarestproxy.init_configs: '[{"is_jmx": true, "collect_default_metrics": true, "service_check_prefix": "confluent", "new_gc_metrics": true, "collect_default_jvm_metrics": true}]'
-      ad.datadoghq.com/kafkarestproxy.instances: '[{"host": "%%host%%","port":"7203","max_returned_metrics":3000}]'
-      ad.datadoghq.com/kafkarestproxy.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
-
-```
-
-Refer to the completed CP yaml here [CP platform config](confluent-platform-with-DD.yaml) 
-
-## Install the [Confluent Platform integration](https://app.datadoghq.eu/integrations?search=confluent)
-
-Just click the UI in the DD dashboards 
+## Integrate Confluent Platfrom with DataDog
 
 ![CP integration on DD UI](Screencaptures/integration.png)
 
 
 ## Validation
-Run the Agent's status subcommand and look for confluent_platform under the JMXFetch section.
+
+When datadog agents are installed on each of the K8s node, they should be displayed when you run the below command
+```
+kubectl get pods -l app.kubernetes.io/component=agent 
+
+```
+Desired Output:
+
+NAME                     READY   STATUS    RESTARTS   AGE
+ganne-dd-datadog-25ttj   3/3     Running   0          18h
+ganne-dd-datadog-gckzk   3/3     Running   0          18h
+ganne-dd-datadog-gtvlw   3/3     Running   0          18h
+ganne-dd-datadog-m5zff   3/3     Running   0          18h
+ganne-dd-datadog-n4bl7   3/3     Running   0          18h
+     
+           
+```
+
+# Execute into one of the DD agent pods and check the Datadog agent status
+
+```
+kubectl exec -it <datadog agent pods > -- bash 
+agent status 
+
+```
+Look for the jmxfetch section of the agent status output. It should now show the already established Confluent platform integration 
+
 ```
    ========
    JMXFetch
@@ -190,34 +151,16 @@ Run the Agent's status subcommand and look for confluent_platform under the JMXF
 
 ```
 
-#Execute into one of the DD agent pods 
-
-kubectl get pods -l app.kubernetes.io/component=agent 
-kubectl exec -it <any of the pods above> -- bash             
-```
-
-# Check the Datadog agent status
-```
-agent status 
-```
 ### Check the UI 
 
-![UI](images/MetricsSummaryDatadog.jpg)
 
 ### Check the dashboard 
-
-
-
-# Review live logs of kafka-2
-Change the DD URL as needed: 
-
-https://app.datadoghq.eu/logs/livetail?query=pod_name%3Akafka-2
 
 
 # Clean-up 
 
 ```
-helm delete mbldd
+helm delete ganne-dd
 ```
 
 

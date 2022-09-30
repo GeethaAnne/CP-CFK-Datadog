@@ -27,12 +27,30 @@ First we need to install a DD agent on every node of the K8s cluster. The Datado
 
 For  information on how to install Datadog agent on Kubernetes Follow this(It walks through an example Agent installation) guide
 
-## Create API key 
+## Create DataDog API key 
+
+
+![UI](Screencaptures/dd-api-1)
+![UI](Screencaptures/dd-api-2)
+
+Navigate to the Organisational settings in your DataDog UI and scroll to the API keys section. Create a new key, Save it for future usage in CP integration on kubernetes nodes
 
 [Create API key](https://app.datadoghq.eu/organization-settings/api-keys) for the next steps. 
 
 
 ## Install Datadog using  helm 
+
+To install the chart for Datadog, identify the right release name:
+
+1. Install Helm.
+2. Using the Datadog values.yaml configuration file as a reference, create your values.yaml. Datadog recommends that your values.yaml only contain values that need to be overridden, as it allows a smooth experience when upgrading chart versions.
+If this is a fresh install, add the Helm Datadog repo:
+```
+helm   repo add datadog https://helm.datadoghq.com
+helm   repo update
+
+```
+3. Retrieve your Datadog API key from your Agent installation instructions and run:
 
 [Steps](https://docs.datadoghq.com/containers/kubernetes/installation/?tab=helm)
 
@@ -59,7 +77,7 @@ Set your Datadog site to datadoghq.com using the DD_SITE environment variable in
 Note: If the `DD_SITE` environment variable is not explicitly set, it defaults to the US site `datadoghq.com`.  
 If you are using one of the other sites (EU, US3, or US1-FED) this will result in an invalid API key message. Use the documentation site selector to see documentation appropriate for the site you’re using.
 
-# Annotations for each Kafka Component   
+# Annotations for each Kafka Component  in CP deployment yaml file
 
 
 This tutorial assumes you are aware of the process of deploying a CP cluster using CFK. If not, please get started using the quickstart CFK repository under Confluent for Kubernetes examples repo. 
@@ -138,7 +156,7 @@ spec:
 
 ```
 
-I've added the full [CP platform config](confluent-platform-with-DD.yaml) 
+Refer to the completed CP yaml here [CP platform config](confluent-platform-with-DD.yaml) 
 
 ## Install the [Confluent Platform integration](https://app.datadoghq.eu/integrations?search=confluent)
 
@@ -150,26 +168,36 @@ Just click the UI in the DD dashboards
 ## Validation
 Run the Agent's status subcommand and look for confluent_platform under the JMXFetch section.
 ```
-    ========
-    JMXFetch
-    ========
+   ========
+   JMXFetch
+   ========
 
-      Initialized checks
-      ==================
-        confluent_platform
-          instance_name : confluent_platform-localhost-31006
-          message :
-          metric_count : 26
-          service_check_count : 0
-          status : OK
+  Information
+  ==================
+    runtime_version : 11.0.16
+    version : 0.46.0
+   Initialized checks
+  ==================
+    confluent_platform
+      instance_name : confluent_platform-10.92.6.5-7203
+      message : <no value>
+      metric_count : 115
+      service_check_count : 0
+      status : OK
+   Failed checks
+   =============
+    no checks
 ```
 
 ```
+
+#Execute into one of the DD agent pods 
+
 kubectl get pods -l app.kubernetes.io/component=agent 
 kubectl exec -it <any of the pods above> -- bash             
 ```
 
-Run the sub command:  
+# Check the Datadog agent status
 ```
 agent status 
 ```

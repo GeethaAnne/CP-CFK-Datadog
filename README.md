@@ -30,8 +30,8 @@ For  information on how to install Datadog agent on Kubernetes Follow this(It wa
 ## Create DataDog API key 
 
 
-![UI](Screencaptures/dd-api-1)
-![UI](Screencaptures/dd-api-2)
+![Locate DataDog API Keys on UI](Screencaptures/dd-api-1)
+
 
 Navigate to the Organisational settings in your DataDog UI and scroll to the API keys section. Create a new key, Save it for future usage in CP integration on kubernetes nodes
 
@@ -162,7 +162,7 @@ Refer to the completed CP yaml here [CP platform config](confluent-platform-with
 
 Just click the UI in the DD dashboards 
 
-![integ](images/integration.jpg)
+![CP integration on DD UI](Screencaptures/integration.png)
 
 
 ## Validation

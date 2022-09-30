@@ -30,7 +30,7 @@ For  information on how to install Datadog agent on Kubernetes Follow this(It wa
 ## Create DataDog API key 
 
 
-![Locate DataDog API Keys on UI](Screencaptures/dd-api-1)
+![Locate DataDog API Keys on UI] (https://github.com/GeethaAnne/CP-CFK-Datadog/blob/main/Screencaptures/dd-api-1.png)
 
 
 Navigate to the Organisational settings in your DataDog UI and scroll to the API keys section. Create a new key, Save it for future usage in CP integration on kubernetes nodes
@@ -46,13 +46,12 @@ To install the chart for Datadog, identify the right release name:
 2. Using the Datadog values.yaml configuration file as a reference, create your values.yaml. Datadog recommends that your values.yaml only contain values that need to be overridden, as it allows a smooth experience when upgrading chart versions.
 If this is a fresh install, add the Helm Datadog repo:
 ```
-helm   repo add datadog https://helm.datadoghq.com
-helm   repo update
+helm  repo add datadog https://helm.datadoghq.com
+helm  repo update
 
 ```
 3. Retrieve your Datadog API key from your Agent installation instructions and run:
 
-[Steps](https://docs.datadoghq.com/containers/kubernetes/installation/?tab=helm)
 
 ```
 helm repo add datadog https://helm.datadoghq.com
@@ -77,7 +76,7 @@ Set your Datadog site to datadoghq.com using the DD_SITE environment variable in
 Note: If the `DD_SITE` environment variable is not explicitly set, it defaults to the US site `datadoghq.com`.  
 If you are using one of the other sites (EU, US3, or US1-FED) this will result in an invalid API key message. Use the documentation site selector to see documentation appropriate for the site you’re using.
 
-# Annotations for each Kafka Component  in CP deployment yaml file
+# Annotations for each Kafka Component in CP deployment yaml file
 
 
 This tutorial assumes you are aware of the process of deploying a CP cluster using CFK. If not, please get started using the quickstart CFK repository under Confluent for Kubernetes examples repo. 

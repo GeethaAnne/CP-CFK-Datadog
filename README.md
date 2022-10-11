@@ -9,7 +9,7 @@ First we need to install a DD agent on every node of the K8s cluster. The Datado
 For  information on how to install Datadog agent on Kubernetes Follow this(It walks through an example Agent installation) guide
 
 ## Create DataDog API key 
-![API keys] [dd2.png]
+![API keys](dd2.png)
 
 Navigate to the Organisational settings in your DataDog UI and scroll to the API keys section. Create a new key, Save it for future usage in CP integration on kubernetes nodes
 

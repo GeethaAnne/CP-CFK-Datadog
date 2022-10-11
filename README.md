@@ -72,14 +72,18 @@ Refer to the completed CP yaml here [CP platform config](confluent-platform-dd.y
 
 ## Integrate Confluent Platfrom with DataDog
 
-
+![Confluent Platform integration with DataDog](dd1.png0
 
 ## Validation
 
 When datadog agents are installed on each of the K8s node, they should be displayed when you run the below command
-```kubectl get pods -l app.kubernetes.io/component=agent 
+      
+```
+   kubectl get pods -l app.kubernetes.io/component=agent 
+    kubectl exec -it <any of the pods above> -- bash  
 ```
 Desired Output:
+![Agents installed](dd5.png)
 
 ## Execute into one of the DD agent pods and check the Datadog agent status
 

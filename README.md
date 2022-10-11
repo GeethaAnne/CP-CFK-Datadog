@@ -1,23 +1,4 @@
-- [Install DataDog on Kubernetes Clusters](#datadog-install-on-eks-for-cfk)
-  - [Create API key](#create-api-key)
-  - [Install via helm](#install-via-helm)
-  - [Site (none US folks)](#site-none-us-folks)
-- [CR annotations for CFK](#cr-annotations-for-cfk)
-  - [Example:](#example)
-  - [Install the Confluent Platform integration](#install-the-confluent-platform-integration)
-  - [Validation](#validation)
-    - [Check the UI](#check-the-ui)
-    - [Check the dashboard](#check-the-dashboard)
-- [Review live logs of kafka-2](#review-live-logs-of-kafka-2)
-- [Clean-up](#clean-up)
-- [Troubleshooting](#troubleshooting)
-  - [Inside the pod kafka-0](#inside-the-pod-kafka-0)
-    - [Expected output](#expected-output)
-  - [Outside the pod loop over all pods](#outside-the-pod-loop-over-all-pods)
-      - [Expected output](#expected-output-1)
-  - [Check JVM for agents and ports of Jolokia and prometheus](#check-jvm-for-agents-and-ports-of-jolokia-and-prometheus)
-    - [Notice the followings](#notice-the-followings)
-      - [Example](#example-1)
+
       
 This  guide provides an introduction to Data Dog and CP integration when deployed on Kubernetes.  It walks through an example Agent installation and how you can use it to send system level metrics to the Datadog platform. 
 
@@ -34,7 +15,7 @@ Navigate to the Organisational settings in your DataDog UI and scroll to the API
 Refere this documentation [Create API key](https://app.datadoghq.eu/organization-settings/api-keys) for the next steps. 
 
 
-## Install Datadog using  helm 
+## Install Datadog using helm 
 
 To install the chart for Datadog, identify the right release name:
 

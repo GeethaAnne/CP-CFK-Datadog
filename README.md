@@ -1,6 +1,6 @@
 
       
-This  guide provides an introduction to integration between Confluent Platfrom when deployed on Kubernetes and DataDog.  It walks through an example Agent installation and how you can use it to send system level metrics to the Datadog platform. 
+This  guide provides an introduction to integration between Confluent Platform when deployed on Kubernetes and DataDog.  It walks through an example Agent installation and how you can use it to send system level metrics to the Datadog platform. 
 
 # Install DataDog on K8s 
 

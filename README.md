@@ -72,7 +72,9 @@ Refer to the completed CP yaml here [CP platform config](confluent-platform-dd.y
 
 ## Integrate Confluent Platfrom with DataDog
 
-![Confluent Platform integration with DataDog](dd1.png)
+![Confluent Platform integration with DataDog](dd3.png)
+     
+![Confluent Platform integration with DataDog](dd4.png)
 
 ## Validation
 
@@ -113,7 +115,9 @@ Look for the jmxfetch section of the agent status output. It should now show the
 ```
 
 ### Check the dashboard 
-
+      
+![CP Dashboard listed](dd6.png)
+![CP Dashboard listed](dd7.png)
 
 # Clean-up the data agent install
 

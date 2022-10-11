@@ -72,7 +72,7 @@ Refer to the completed CP yaml here [CP platform config](confluent-platform-dd.y
 
 ## Integrate Confluent Platfrom with DataDog
 
-![Confluent Platform integration with DataDog](dd1.png0
+![Confluent Platform integration with DataDog](dd1.png)
 
 ## Validation
 
@@ -80,7 +80,7 @@ When datadog agents are installed on each of the K8s node, they should be displa
       
 ```
    kubectl get pods -l app.kubernetes.io/component=agent 
-    kubectl exec -it <any of the pods above> -- bash  
+   kubectl exec -it <any of the pods above> -- bash  
 ```
 Desired Output:
 ![Agents installed](dd5.png)
